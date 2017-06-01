@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="conteudo">
+		<p:panel header="Cadastro de Despesas" id="pnl-despesas">
+			<h:form id="frmDespesas">
+				<p:growl />
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Descrição da Despesa" />
+					<p:inputText value="#{beanTipoDespesa.despesa.descricao}"
+						required="true" />
+					<p:outputLabel />
+					<p:commandButton value="Cadastrar"
+						action="#{beanTipoDespesa.gravar}"
+						update=":frmDespesas,:frmListaDespesa" ajax="true" />
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+
+		<p:panel header="Tipos de Despesas">
+
+			<h:form id="frmListaDespesa">
+				<p:growl></p:growl>
+				<p:dataTable value="#{beanTipoDespesa.despesas}" var="despesa"
+					paginator="true" rows="10">
+					<p:column headerText="Descrição">
+						<h:outputLabel value="#{despesa.descricao}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+							action="#{beanTipoDespesa.excluir}" update=":frmListaDespesa"
+							ajax="true">
+							<f:setPropertyActionListener value="#{despesa}"
+								target="#{beanTipoDespesa.despesa}">
+							</f:setPropertyActionListener>
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							onclick="PF('editarTipoDespesa').show()" update=":frmEdicao">
+							<f:setPropertyActionListener value="#{despesa}"
+								target="#{beanTipoDespesa.tipoDespesaEdicao}"></f:setPropertyActionListener>
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+
+		<p:dialog widgetVar="editarTipoDespesa" header="Editar Tipo Despesa"
+			resizable="false" modal="true" appendTo="@(body)">
+			<h:form id="frmEdicao">
+
+				<h:inputHidden value="#{beanTipoDespesa.tipoDespesaEdicao.idDespesa}" />
+				
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Descrição da Despesa" />
+					<p:inputText value="#{beanTipoDespesa.tipoDespesaEdicao.descricao}" />
+					<p:outputLabel />
+					<p:commandButton value="Salvar" action="#{beanTipoDespesa.editar}"
+						update=":frmEdicao,:frmListaDespesa" ajax="true"
+						onclick="editarTipoDespesa.close()" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>

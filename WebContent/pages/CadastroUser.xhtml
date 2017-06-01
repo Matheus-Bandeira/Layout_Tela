@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="conteudo">
+		<p:panel header="Cadastro de Usuarios" id="pnl-cadastro">
+
+			<h:form id="frmUsu">
+				<p:growl></p:growl>
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Código:" />
+					<p:inputText value="#{beanUsuario.usuario.codigo}" required="true"/>
+					<p:outputLabel value="Senha:" />
+					<p:password value="#{beanUsuario.usuario.senha}" required="true"/>
+
+					<p:commandButton value="Cadastrar"
+						action="#{beanUsuario.cadastrar}" update=":frmUsu,:frmLista"
+						ajax="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:panel>
+
+		<h:form id="frmLista">
+			<p:panel header="Listagem de Usuários" id="pnl-lista">
+				<p:dataTable paginator="true" rows="10"
+					emptyMessage="Nenhum Registro Encontrado" id="tbl-user"
+					var="usuario" value="#{beanUsuario.todosUsuarios}">
+
+					<p:column headerText="Código">
+						<p:outputLabel value="#{usuario.codigo}" />
+					</p:column>
+
+					<p:column headerText="Senha">
+						<p:outputLabel value="#{usuario.senha}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+
+						<p:commandButton icon="ui-icon-trash"
+							action="#{beanUsuario.excluir}" update=":frmLista,:frmUsu">
+							<f:setPropertyActionListener value="#{usuario}"
+								target="#{beanUsuario.usuario}">
+							</f:setPropertyActionListener>
+						</p:commandButton>
+						<p:commandButton icon="ui-icon-pencil" title="Editar"
+							onclick="PF('editar-usu').show()" update=":frmLista,:frm-editar">
+
+							<f:setPropertyActionListener value="#{usuario}"
+								target="#{beanUsuario.usuarioEdicao}">
+							</f:setPropertyActionListener>
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:dialog widgetVar="editar-usu" header="Atualizar Usuario"
+			appendTo="@(body)" modal="true">
+			<h:form id="frm-editar">
+
+				<h:inputHidden value="#{beanUsuario.usuarioEdicao.idUsuario}" />
+
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Código" />
+					<p:inputText value="#{beanUsuario.usuarioEdicao.codigo}" />
+
+					<p:outputLabel value="Senha" />
+					<p:password value="#{beanUsuario.usuarioEdicao.senha}" />
+
+					<p:commandButton value="Salvar" action="#{beanUsuario.editar}"
+						onclick="editar-usu.close()"
+						update=":frm-editar,:frmLista,:frmUsu " />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

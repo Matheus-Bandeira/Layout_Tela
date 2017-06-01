@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="conteudo">
+
+		<p:panel header="Cadastro de Clientes">
+			<h:form id="frmCadastroCli">
+				<p:messages></p:messages>
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Nome do Cliente" />
+					<p:inputText value="#{beanCliente.cliente.nome}" size="40" required="true"/>
+
+					<p:outputLabel value="Logradouro" />
+					<p:inputText value="#{beanCliente.cliente.logradouro}" size="40" />
+
+					<p:outputLabel value="Bairro" />
+					<p:inputText value="#{beanCliente.cliente.bairro}" size="15" />
+
+					<p:outputLabel value="CEP" />
+					<p:inputMask value="#{beanCliente.cliente.cep}" size="8"
+						mask="99.999-999" />
+
+					<p:outputLabel value="E-mail" />
+					<p:inputText value="#{beanCliente.cliente.email}" size="30" />
+
+					<p:outputLabel value="Telefone" />
+					<p:inputText value="#{beanCliente.cliente.telefone}" size="15" />
+
+					<p:outputLabel value="" />
+					<p:commandButton value="Cadastrar" action="#{beanCliente.gravar}"
+						update=":frmCadastroCli,:frmListCliente" />
+				</h:panelGrid>
+			</h:form>
+
+		</p:panel>
+
+		<p:panel header="Lista De Clientes">
+			<h:form id="frmListCliente">
+				<p:messages></p:messages>
+				<p:dataTable value="#{beanCliente.clientes}" var="cliente"
+					paginator="true" rows="10">
+
+					<p:column headerText="Nome" filterBy="#{cliente.nome}">
+						<p:outputLabel value="#{cliente.nome}" />
+					</p:column>
+
+					<p:column headerText="Logradouro">
+						<p:outputLabel value="#{cliente.logradouro}" />
+					</p:column>
+
+					<p:column headerText="Bairo">
+						<p:outputLabel value="#{cliente.bairro}" />
+					</p:column>
+
+
+					<p:column headerText="E-mail">
+						<p:outputLabel value="#{cliente.email}" />
+					</p:column>
+
+					<p:column headerText="Telefone">
+						<p:outputLabel value="#{cliente.telefone}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash" title="Excluir"
+							action="#{beanCliente.excluir}" update=":frmListCliente,:frmCadastroCli"
+							ajax="true">
+							<f:setPropertyActionListener value="#{cliente}"
+								target="#{beanCliente.cliente}"></f:setPropertyActionListener>
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil" title="Editar"
+							onclick="PF('dlgAltera').show()" update=":frmAltera">
+							<f:setPropertyActionListener value="#{cliente}"
+								target="#{beanCliente.clienteEdicao}"></f:setPropertyActionListener>
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+		</p:panel>
+
+		<p:dialog widgetVar="dlgAltera" modal="true" header="Alterar"
+			resizable="false" appendTo="@(body)">
+			<h:form id="frmAltera">
+
+				<h:inputHidden value="#{beanCliente.clienteEdicao.idCliente}" />
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Nome" />
+					<p:inputText value="#{beanCliente.clienteEdicao.nome}" required="true"/>
+
+					<p:outputLabel value="Logradouro" />
+					<p:inputText value="#{beanCliente.clienteEdicao.logradouro}" />
+
+					<p:outputLabel value="Bairro" />
+					<p:inputText value="#{beanCliente.clienteEdicao.bairro}" />
+
+					<p:outputLabel value="CEP" />
+					<p:inputText value="#{beanCliente.clienteEdicao.cep}" />
+
+					<p:outputLabel value="E-mail" />
+					<p:inputText value="#{beanCliente.clienteEdicao.email}" />
+
+					<p:outputLabel value="Telefone" />
+					<p:inputText value="#{beanCliente.clienteEdicao.telefone}" />
+
+					<p:outputLabel />
+					<p:commandButton value="Salvar" action="#{beanCliente.editar}"
+						update=":frmAltera,:frmListCliente" onclick="dlgAltera.close()" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

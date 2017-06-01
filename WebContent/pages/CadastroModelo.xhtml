@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="conteudo">
+		<p:panel header="Cadastro de Modelos">
+			<h:form id="frmModelo">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Tipo" />
+					<p:inputText value="#{beanModelo.modelo.tipo}" />
+
+					<p:outputLabel value="Marca" />
+					<p:inputText value="#{beanModelo.modelo.marca}" />
+
+					<p:outputLabel value="Modelo" />
+					<p:inputText value="#{beanModelo.modelo.modelo}" />
+
+					<p:outputLabel value="Série" />
+					<p:inputText value="#{beanModelo.modelo.serie}" />
+
+					<p:outputLabel value="" />
+					<p:commandButton value="Cadastrar" action="#{beanModelo.gravar}"
+						update=":frmModelo,:frmListaModelo" ajax="true" />
+				</h:panelGrid>
+				<p:messages />
+			</h:form>
+		</p:panel>
+
+		<p:panel header="Lista de Modelos">
+			<h:form id="frmListaModelo">
+				<p:dataTable value="#{beanModelo.modelos}" var="modelo"
+					paginator="true" rows="10">
+
+					<p:column headerText="Tipo">
+						<p:outputLabel value="#{modelo.tipo}" />
+					</p:column>
+
+					<p:column headerText="Marca">
+						<p:outputLabel value="#{modelo.marca}" />
+					</p:column>
+
+					<p:column headerText="Modelo">
+						<p:outputLabel value="#{modelo.modelo}" />
+					</p:column>
+
+					<p:column headerText="Série">
+						<p:outputLabel value="#{modelo.serie}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash" title="Excluir"
+							update=":frmListaModelo" action="#{beanModelo.excluir}">
+							<f:setPropertyActionListener value="#{modelo}"
+								target="#{beanModelo.modelo}"></f:setPropertyActionListener>
+						</p:commandButton>
+						<p:commandButton icon="ui-icon-pencil" title="Editar"
+							onclick="PF('dlgEditar').show()" update=":frmdlgEdicao">
+							<f:setPropertyActionListener value="#{modelo}"
+								target="#{beanModelo.modeloedicao}"></f:setPropertyActionListener>
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+
+		<p:dialog widgetVar="dlgEditar" modal="true" resizable="false"
+			header="Editar Modelo" appendTo="@(body)">
+			<h:form id="frmdlgEdicao">
+
+				<h:inputHidden value="#{beanModelo.modeloedicao.idModelo}"/>
+
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Tipo" />
+					<p:inputText value="#{beanModelo.modeloedicao.tipo}" />
+
+					<p:outputLabel value="Marca" />
+					<p:inputText value="#{beanModelo.modeloedicao.marca}" />
+
+					<p:outputLabel value="Modelo" />
+					<p:inputText value="#{beanModelo.modeloedicao.modelo}" />
+
+					<p:outputLabel value="Série" />
+					<p:inputText value="#{beanModelo.modeloedicao.serie}" />
+
+					<p:outputLabel />
+					<p:commandButton value="Salvar" onclick="dlgEditar.close()"
+						action="#{beanModelo.editar}"
+						update=":frmdlgEdicao,:frmListaModelo,:frmModelo" />
+
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+
+</html>

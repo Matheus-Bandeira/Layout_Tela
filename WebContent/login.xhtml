@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<style>
+#panelLogin {
+	width: intrinsec;
+	width: -moz-fit-content;
+	width: max-content;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	left: 50%;
+}
+</style>
+</h:head>
+
+<h:body>
+	<p:panel header="Login" id="panelLogin">
+		<h:form id="form1">
+			<p:growl></p:growl>
+			<p:inputText size="20" required="true"
+				requiredMessage="Insira o e-mail." placeholder="Codigo"
+				value="#{beanLogin.usuario.codigo}" />
+			<br />
+			<br />
+			<p:inputText size="20" type="password" required="true"
+				requiredMessage="Insira a senha." placeholder="Senha"
+				value="#{beanLogin.usuario.senha}" />
+			<br />
+			<br />
+			<center>
+				<p:commandButton value="Entrar" ajax="false" action="#{beanLogin.logar}"/>
+			</center>
+			<p:messages></p:messages>
+		</h:form>
+	</p:panel>
+</h:body>
+</html>

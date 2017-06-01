@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="conteudo">
+		<p:panel header="Cadastro de Receitas">
+			<h:form id="frmCadastroRec">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Valor" />
+					<p:inputText value="#{beanReceita.receita.valor}" required="true" />
+
+					<p:outputLabel value="Data" />
+					<p:calendar value="#{beanReceita.receita.data}" required="true" />
+
+
+					<p:outputLabel value="Empresa" />
+					<p:selectOneMenu value="#{beanReceita.cliente.idCliente}"
+						required="true" filter="true">
+						<f:selectItems var="cliente" value="#{beanCliente.clientes}"
+							itemLabel="#{cliente.nome}" itemValue="#{cliente.idCliente}">
+						</f:selectItems>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Modelo" />
+					<p:selectOneMenu value="#{beanReceita.modelo.idModelo}"
+						required="ture" filter="true">
+						<f:selectItems var="modelo" value="#{beanModelo.modelos}"
+							itemLabel="#{modelo.marca} - #{modelo.tipo} - #{modelo.modelo}"
+							itemValue="#{modelo.idModelo}">
+						</f:selectItems>
+					</p:selectOneMenu>
+
+					<p:outputLabel />
+					<p:commandButton value="Cadastrar" action="#{beanReceita.gravar}"
+						update=":frmCadastroRec,:frmlListaReceita" ajax="true" />
+					<p:messages></p:messages>
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+
+		<p:panel header="A Receber">
+			<h:form id="frmlListaReceita">
+				<p:dataTable value="#{beanReceita.listaReceita}" var="receita">
+					<p:column headerText="Valor">
+						<h:outputText value="#{receita.valor}" />
+					</p:column>
+
+					<p:column headerText="Data">
+						<h:outputText value="#{receita.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Cliente">
+						<h:outputText value="#{receita.cliente.nome}" />
+					</p:column>
+
+					<p:column headerText="Modelo">
+						<h:outputText value="#{receita.modeloAr.marca} - #{receita.modeloAr.tipo} - #{receita.modeloAr.modelo}"/>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+
+</html>

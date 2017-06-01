@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Projeto Administrativo</title>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" closable="false" collapsed="false"
+			header="Sistema Administrativo">
+		</p:layoutUnit>
+
+		<p:layoutUnit header="Desenvolvido por Matheus Bandeira"
+			position="south" closable="false" collapsed="false">
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" closable="false" collapsed="false"
+			size="250">
+			<h:form id="frmTemplate" target="_blank">
+				<p:panelMenu>
+
+					<p:submenu label="Arquivo">
+						<p:menuitem value="Principal" outcome="/pages/principal.xhtml" />
+						<p:menuitem value="Sair" action="#{beanLogin.logout}" />
+					</p:submenu>
+
+					<p:submenu label="Cadastros">
+						<p:menuitem value="Fabricantes" />
+						<p:menuitem value="Modelos Refrigerador"
+							outcome="/pages/CadastroModelo.xhtml" />
+						<p:menuitem value="Clientes"
+							outcome="/pages/cadastroCliente.xhtml" />
+					</p:submenu>
+
+					<p:submenu label="Gerência de Acesso">
+						<p:menuitem value="Usuários" outcome="/pages/CadastroUser.xhtml" />
+						<p:menuitem value="Configurações" />
+					</p:submenu>
+
+					<p:submenu label="Financeiro">
+						<p:menuitem value="A Pagar" outcome="/pages/despesas.xhtml" />
+						<p:menuitem value="A Receber" outcome="/pages/receita.xhtml" />
+						<p:menuitem value="Tipos de Despesas"
+							outcome="/pages/tipoDespesa.xhtml" />
+					</p:submenu>
+
+					<p:submenu label="Relatórios">
+						<p:menuitem value="Clientes"
+							action="#{beanRelatorio.relatorioClientes}" ajax="false" />
+
+						<p:menuitem value="Despesas"
+							action="#{beanRelatorio.relatorioDespesa}" ajax="false" />
+					</p:submenu>
+				</p:panelMenu>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" closable="false" collapsed="false">
+			<ui:insert name="conteudo" />
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

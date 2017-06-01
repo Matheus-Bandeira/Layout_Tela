@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="conteudo">
+		<p:panel header="Cadastro de Depesas">
+			<h:form id="frmDespesas">
+				<p:growl></p:growl>
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Tipo Despesa" />
+					<p:selectOneMenu value="#{beanDespesa.despesa.tipoDespesa}"
+						filter="true" required="true">
+						<f:selectItems var="despesa" value="#{beanTipoDespesa.despesas}"
+							itemLabel="#{despesa.descricao}" itemValue="#{despesa.descricao}">
+						</f:selectItems>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Valor(R$)" />
+					<p:inputText size="7" value="#{beanDespesa.despesa.valor}"
+						required="true" />
+
+					<p:outputLabel value="Data" />
+					<p:calendar value="#{beanDespesa.despesa.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:calendar>
+
+					<p:outputLabel value="Descrição" />
+					<p:inputTextarea value="#{beanDespesa.despesa.descricao}" />
+
+					<p:outputLabel />
+					<p:commandButton value="Cadastrar" action="#{beanDespesa.gravar}"
+						update=":frmDespesas,:despesas" />
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+
+		<h:form id="despesas">
+			<p:panel header="Todas as Despesas">
+				<p:dataTable value="#{beanDespesa.todasDespesas}" var="despesa"
+					paginator="true" rows="10">
+					<p:column headerText="Tipo Despesa">
+						<p:outputLabel value="#{despesa.tipoDespesa}" />
+					</p:column>
+
+					<p:column headerText="Valor(R$)">
+						<p:outputLabel value="#{despesa.valor}" />
+					</p:column>
+
+					<p:column headerText="Data">
+						<p:outputLabel value="#{despesa.data}" >
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</p:outputLabel>
+					</p:column>
+
+					<p:column headerText="Descrição">
+						<p:outputLabel value="#{despesa.descricao}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+							action="#{beanDespesa.excluir}" update=":despesas,:frm-editar">
+							<f:setPropertyActionListener value="#{despesa}"
+								target="#{beanDespesa.despesa}"></f:setPropertyActionListener>
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							onclick="PF('dgl-editar').show()" update=":frm-editar">
+
+							<f:setPropertyActionListener value="#{despesa}"
+								target="#{beanDespesa.despesaEdicao}">
+							</f:setPropertyActionListener>
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Editar Cadastro" widgetVar="dgl-editar" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frm-editar">
+
+				<h:inputHidden value="#{beanDespesa.despesaEdicao.idDespesa}" />
+
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Tipo Depesa" />
+					<p:selectOneMenu value="#{beanDespesa.despesaEdicao.tipoDespesa}"
+						filter="true" required="true">
+						<f:selectItems var="despesa" value="#{beanTipoDespesa.despesas}"
+							itemLabel="#{despesa.descricao}" itemValue="#{despesa.descricao}">
+						</f:selectItems>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Valor(R$)" />
+					<p:inputText value="#{beanDespesa.despesaEdicao.valor}" size="7"
+						required="true" />
+
+					<p:outputLabel value="Data" />
+					<p:calendar value="#{beanDespesa.despesaEdicao.data}" size="7"
+						required="true" />
+
+
+					<p:outputLabel value="Descrição" />
+					<p:inputTextarea value="#{beanDespesa.despesaEdicao.descricao}" />
+
+					<p:outputLabel />
+					<p:commandButton value="Salvar" action="#{beanDespesa.editar}"
+						update=":frm-editar,:despesas,:frmDespesas"
+						onclick="dgl-editar.close()" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>
